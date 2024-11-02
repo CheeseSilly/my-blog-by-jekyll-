@@ -19,6 +19,10 @@ Hello World! 这是Sillycheese的第一篇博客，也是秘密结社的第一�
 
 ## Hello，World！
 
+ <iframe src="/common/dist/index.html" width="800" height="600" style="border: none;"></iframe>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/vconsole/dist/vconsole.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js"></script>
