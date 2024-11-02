@@ -12,12 +12,7 @@ image:
  path: /img/about_me.jpg
 ---
 
-Hello World! 这是Sillycheese的第一篇博客，也是秘密结社的第一篇博客。你可以在这里找到我的个人笔记与生活记录
 
-
-# 总而言之
-
-## Hello，World！
 
  <iframe src="/common/dist/index.html" width="800" height="600" style="border: none;"></iframe>
 
