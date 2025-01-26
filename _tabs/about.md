@@ -6,6 +6,8 @@ order: 4J
 
 > 只是一只身处无人在意角落的学计算机的Sillycheese，身兼秘密结社社长。
 
+<a href="https://count.getloli.com/"><img src="https://count.getloli.com/get/@sillycheese:readme?theme=rule34" height="100" align="right"></a>
+
 ## 当前学习
 
 - [x] CMU15445 - Project2  --重构2024版本中，目前为P1
