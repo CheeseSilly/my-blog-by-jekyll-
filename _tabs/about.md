@@ -8,11 +8,11 @@ order: 4J
 
 ## 当前学习
 
-- [ ] CS106B-Assignment3
-- [x] CMU15445 - Project2
-- [ ] weblab - lab02
-- [ ] CS189- Assignment1
-- [ ] 6.s081-Lab02
+- [x] CMU15445 - Project2  --重构2024版本中，目前为P1
+- [ ] 110L -lec2
+- [ ] CS170 -lec1
+- [ ] 571 -WDB2
+
 ## 未来学习
 
 - [ ] CS162
@@ -35,6 +35,10 @@ order: 4J
 - [x] CS61B
 - [x] CS61C-Project2
 - [x] CS188
+- [x] mit6.s081
+- [x] CS106B-Assignment3
+- [x] weblab - lab02
+- [x] CS189- Assignment1
 
 如果有任何问题，欢迎来mail我哦！
 
