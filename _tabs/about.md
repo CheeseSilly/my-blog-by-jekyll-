@@ -14,14 +14,14 @@ order: 4J
 - [ ] 110L -lec2
 - [ ] CS170 -lec1
 - [ ] 571 -WDB2
+- [ ] CS162 -lec01
+- [ ] NJU OS -并发
+- [ ] CS170 -lec01
 
 ## 未来学习
 
-- [ ] CS162
-- [ ] NJU OS
 - [ ] CMU 15-418
 - [ ] MIT 6.824
-- [ ] Coursera:ML
 - [ ] CS229
 - [ ] UMich EECS 498-007 / 598-005
 - [ ] 李宏毅
@@ -29,7 +29,6 @@ order: 4J
 - [ ] CS224w
 - [ ] CS161
 - [ ] CS144
-- [ ] CS170
 
 # 已经完成
 
