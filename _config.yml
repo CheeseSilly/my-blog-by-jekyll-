@@ -20,7 +20,7 @@ timezone: Asia/Shanghai
 
 title: Sillycheese # the main title
 
-tagline: Sillycheese and Secret Society,just some blogs~  # it will display as the sub-title
+tagline: Sillycheese and Secret Society,just some blogs~ # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Just a fox and his secret society.
@@ -29,7 +29,7 @@ description: >- # used by seo meta and the atom feed
 url: ""
 
 github:
-  username: Si11ycheese # change to your github username
+  username: CheeseSilly # change to your github username
 
 twitter:
   username: cheesesilly1 # change to your twitter username
@@ -67,14 +67,12 @@ google_analytics:
 #     dark   - Use the dark color scheme
 theme_mode: # [light|dark]
 
-         
-
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url
 # will be added to all image (site avatar & posts' images) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-img_cdn: 'https://cdn.jsdelivr.net/gh/Si11ycheese/MyGallery@master'
+img_cdn: "https://cdn.jsdelivr.net/gh/Si11ycheese/MyGallery@master"
 
 # the avatar on sidebar, support local or CORS resources
 avatar: "/img/avatar.png"
@@ -102,15 +100,13 @@ comments:
     lang: # optional, default to the value of `site.lang`
     reactions_enabled: # optional, default to the value of `1`
 
-
-
 # Self-hosted static assets, optional › https://github.com/cotes2020/chirpy-static-assets
 assets:
   self_host:
-    enabled:  # boolean, keep empty means false
+    enabled: # boolean, keep empty means false
     # specify the Jekyll environment, empty means both
     # only works if `assets.self_host.enabled` is 'true'
-    env:   # [development|production]
+    env: # [development|production]
 
 pwa:
   enabled: true # the option for PWA feature
