@@ -10,18 +10,16 @@ order: 4J
 
 ## 当前学习
 
-- [x] CMU15445 - Project2  --重构2024版本中，目前为P1
-- [ ] 110L -lec2
-- [ ] CS170 -lec1
-- [ ] 571 -WDB2
-- [ ] CS162 -lec01
-- [ ] NJU OS -并发
-- [ ] CS170 -lec01
+- [ ] NJU OS 
+- [ ] rCore
+- [ ] 考研
+- [ ] 计设
 
 ## 未来学习
 
 - [ ] CMU 15-418
 - [ ] MIT 6.824
+- [x] CS162 -lec02
 - [ ] CS229
 - [ ] UMich EECS 498-007 / 598-005
 - [ ] 李宏毅
@@ -40,6 +38,9 @@ order: 4J
 - [x] CS106B-Assignment3
 - [x] weblab - lab02
 - [x] CS189- Assignment1
+- [x] 110L -lec2
+- [x] CS170 -lec10
+- [x] 571 -WDB2
 
 如果有任何问题，欢迎来mail我哦！
 
