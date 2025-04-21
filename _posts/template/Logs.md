@@ -9,7 +9,6 @@ categories: Logs
 
 ## 早上
 
-例行公事: Rust圣经《代码随想录》CLRS
 
 ## 下午
 
