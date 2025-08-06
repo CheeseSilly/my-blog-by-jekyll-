@@ -1,5 +1,5 @@
 ---
-title: 2025/8/6 log
+title: 2025/8/6 Introduction to the Internet
 author: Sillycheese
 date: 2025/8/6 20:19:53 +0800
 categories:
