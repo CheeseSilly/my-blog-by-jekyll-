@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2025-08-04-线性表.md",
+                "file": "2025-08-07-微分方程.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-08-04-线性表"
+              "title": "2025-08-07-微分方程"
             }
           }
         ]
@@ -186,10 +186,10 @@
   },
   "active": "b80f5c62eb014e4e",
   "lastOpenFiles": [
+    "2025-08-04-线性表.md",
     "2025-08-07-微分方程.md",
     "2025-08-08-线性表.md",
     "2025-08-05-Introduction.md",
-    "2025-08-04-线性表.md",
     "template/考研数学.md",
     "template/Logs.md",
     "2025-05-24-线程池.md",
