@@ -122,7 +122,7 @@ Conversely, **shallow methods** retain value in terms  of interpretability and p
 
 $$
 \min_{S, W} \;
-\sum_{i,j} S_{ij} \, \| z_i - z_j \|_2^2 \; + \; \alpha \, \| S \|_F^2
+\sum_{i,j} S_{ij} \, \| z_i - z_j \|_2^2 \; + \; \alpha \, \| S \|_F^2 \tag{1}
 $$
 
 
@@ -135,3 +135,88 @@ $$
 
 ### Inter-class topology preserving
 
+To measure the relationship between categories, we propose **category anchors** to represent category locations.
+
+𝐇 =$[𝐡1, ... , 𝐡𝑟]$ is the latent representation of classes in low-dimensional space.
+
+Inspired by the **reversed graph embedding assumption**, we give the following inter-class topology assumption.
+
+if $C_i$ and $C_j$ are closely related, then the positions of the corresponding  category anchors $𝐡_𝑖$ and $𝐡_𝑗$ in the low-dimensional space should be  close.
+
+$$
+\min_{H} \; \sum_{i,j}^r R_{ij} \, \mathrm{dis}(h_i, h_j) \tag{4}
+$$
+we use Euclidean distance $𝑑𝑖𝑠(𝐡_𝑖, 𝐡_𝑗 ) = ‖𝐡_𝑖 − 𝐡_𝑗 ‖_2 ^2$
+
+$$
+\min_{\mathbf{H}} \sum_{ij} R_{ij} \| \mathbf{h}_i - \mathbf{h}_j \|_2^2    \tag{5}
+$$
+
+For class $C_i$, we obtain its inter-class topology by solving the following problem
+
+$$
+\begin{aligned}
+\min_{\mathbf{R}_i} \quad & \sum_{j=1}^{r} R_{ij} \| \mathbf{h}_i - \mathbf{h}_j \|_2^2 + \gamma R_{ij}^2 \\
+\text{s.t.} \quad & \sum_{j=1}^{r} R_{ij} = 1, \\
+& \mathbf{R}_i \ge \mathbf{0}, \\
+& R_{ii} = 0
+\end{aligned}
+
+\tag{6}
+$$
+
+$$
+\begin{aligned}
+\min_{\mathbf{R}} \quad & \sum_{ij}^r R_{ij} \| \mathbf{h}_i - \mathbf{h}_j \|_2^2 + \gamma R_{ij}^2 \\
+\text{s.t.} \quad & \mathbf{R} \mathbf{1} = \mathbf{1}, \quad \mathbf{R} \ge \mathbf{0}, \quad \mathrm{diag}(\mathbf{R}) = \mathbf{0}, \quad \mathbf{R} = \mathbf{R}^T
+\end{aligned}
+\tag{7}
+$$
+
+Recap: alternative optimization
+### Intra-class compactness learning
+
+After learning the category anchors, we **assign samples near anchors**  o obtain a **compact intra-class distribution**.
+
+$$
+\begin{aligned}
+\min_{\mathbf{F},\mathbf{Z}} \quad & \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{z}_i - \mathbf{h}_l \|_2^2 \\
+\text{s.t.} \quad & \mathbf{F} \mathbf{1}_r = \mathbf{1}_n, \quad \mathbf{F} \ge \mathbf{0}
+\end{aligned}
+\quad (8)
+
+\tag{8}
+$$
+
+Then, the connections between **intra-class samples and their corresponding**  
+**class anchors** are established through the matrix $𝐅$.
+
+Combining the problem (8) and graph structure learning (1),we have the following optimization problem:
+
+$$
+\begin{aligned}
+\min_{\mathbf{S},\mathbf{F},\mathbf{W}} \quad & \sum_{ij=1}^{n} (S_{ij} \| \mathbf{z}_i - \mathbf{z}_j \|_2^2 + \alpha S_{ij}^2) + \delta \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{z}_i - \mathbf{h}_l \|_2^2 \\
+\text{s.t.} \quad & \mathbf{S} \mathbf{1}_n = \mathbf{1}_n, \quad \mathbf{S} \ge \mathbf{0}, \\
+& \mathrm{rank}(\mathbf{L}_{\mathbf{S}}) = n - r, \\
+& \mathbf{W}^T \mathbf{W} = \mathbf{I}_k, \\
+& \mathbf{F} \mathbf{1}_r = \mathbf{1}_n, \quad \mathbf{F} \ge \mathbf{0}
+\end{aligned}
+\tag{9}
+$$
+
+Since the rank constraint is challenging to solve, we use **Ky Fan’s Theorem**  to  
+convert the rank constraint into the following easy-to-solve way.
+
+$$
+\begin{aligned}
+\min_{\mathbf{S},\mathbf{F},\mathbf{W}} \quad & \sum_{ij=1}^{n} (S_{ij} \| \mathbf{z}_i - \mathbf{z}_j \|_2^2 + \alpha S_{ij}^2) + \delta \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{z}_i - \mathbf{h}_l \|_2^2 + 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) \\
+\text{s.t.} \quad & \mathbf{S} \mathbf{1}_n = \mathbf{1}_n, \quad \mathbf{S} \ge \mathbf{0}, \\
+& \mathbf{W}^T \mathbf{W} = \mathbf{I}_k, \\
+& \mathbf{F}^T \mathbf{F} = \mathbf{I}_r, \quad \mathbf{F} \ge \mathbf{0}
+\end{aligned}
+\tag{10}
+$$
+
+the above thing converts $rank(L_S) = n - r$ to $+2βTr(F^T L_S F)$
+
+every row of F is one-hot 
