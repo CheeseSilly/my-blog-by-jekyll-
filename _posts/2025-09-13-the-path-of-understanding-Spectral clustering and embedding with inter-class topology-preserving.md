@@ -220,3 +220,107 @@ $$
 the above thing converts $rank(L_S) = n - r$ to $+2βTr(F^T L_S F)$
 
 every row of F is one-hot 
+
+$$
+\| \mathbf{W}^T \mu_s - \mathbf{W}^T \mu_t \|_2^2 = \| \mathbf{W}^T (\mu_s - \mu_t) \|_2^2 \tag{11}
+$$
+
+
+$$
+\begin{aligned}
+\| \hat{\mathbf{W}}^T (\mu_s - \mu_t) \|_2^2 &= \| \mathbf{W}^T (\mu_s - \mu_t) \|_2^2 + \| \mathbf{W}_{\perp}^T (\mu_s - \mu_t) \|_2^2 \\
+& \ge \| \mathbf{W}^T (\mu_s - \mu_t) \|_2^2
+\end{aligned}
+\tag{12}
+$$
+
+$$
+\| \mu_s - \mu_t \|_2^2 \ge \| \mathbf{W}^T (\mu_s - \mu_t) \|_2^2 \tag{13}
+$$
+
+
+
+which shows that inter-class distances after projection are less than or  equal to in the original space, concluding the proof.
+
+orthogonal transformation from high-  dimensional to low-dimensional space makes the inter-class distance  smaller while the intra-class variance remains unchanged under some  scenarios, which may lead to the **overlapping of neighbor classes in low-dimensional space**.
+
+In contrast, the problem (8) aggregates  **samples of the same class near the class anchors** and learns the accurate clustering structure to eliminate the issues caused orthogonal  
+constraint.
+
+We can simultaneously learn category-separable embeddings and  graph structure by optimizing the problem (10).
+
+three advantages
+
+- a sample can only be assigned to one category  under the non-negative orthogonal constraint of the label assignment matrix.
+
+- Second, we get a more compact intra-class representation by **minimizing the distances between samples and category anchors**, which eliminates the problem of inseparability caused by the overlapping of neighbor classes
+
+- due to the fact that category anchors contain inter-class  topology, our approach also preserves the inter-class topology. The results further verify that our proposed intra-class compactness learning can obtain more inter-class separable results in Section 5.
+
+### Preserving projected clustering
+
+we integrate **inter-class topology preserving** **(5)** with **intra-class compactness learning (10)** and propose the following Inter-class Topology-Preserving Clustering (ITPC) objective function.
+
+$$
+\begin{aligned}
+\min_{\mathbf{S},\mathbf{F},\mathbf{H}} \quad & \sum_{ij=1}^{n} (S_{ij} \| \mathbf{x}_i - \mathbf{x}_j \|_2^2 + \alpha S_{ij}^2) + 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F})+ \lambda_1 \sum_{st=1}^{r}  R_{st} \| \mathbf{h}_s - \mathbf{h}_t \|_2^2 + \lambda_2 \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{x}_i - \mathbf{h}_l \|_2^2 \\
+\text{s.t.} \quad & \mathbf{S} \mathbf{1}_n = \mathbf{1}_n, \quad \mathbf{S} \ge \mathbf{0}, \quad \mathbf{F}^T \mathbf{F} = \mathbf{I}_r, \quad \mathbf{F} \ge \mathbf{0}.
+\end{aligned}
+\tag{14}
+$$
+
+The first  item is used for **graph structure learning**. 
+
+The second term aims to  **learn the label assignment matrix 𝐅 that aligns with the learned graph structure**. 
+
+The third term focuses on **learning anchor representations 𝐇, preserving the inter-class topology structure**. 
+
+The fourth term is used to  **assign samples near the class anchors, facilitating accurate clustering structures and ensuring intra-class compactness.**
+
+
+Well,in my view. it looks so raw.
+
+To uncover the data’s latent manifold structure, we perform graph  structure learning in the low-dimensional embedding space. We present the objective function for Inter-class Topology-Preserving Projected Clustering (ITPPC) as follows:
+
+$$
+\begin{aligned}
+\min_{\mathbf{S},\mathbf{F},\mathbf{H},\mathbf{W}} \quad & \sum_{ij=1}^{n} (S_{ij} \| \mathbf{W}^T \mathbf{x}_i - \mathbf{W}^T \mathbf{x}_j \|_2^2 + \alpha S_{ij}^2) + 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) \\
+& + \lambda_1 \sum_{st=1}^{r} R_{st} \| \mathbf{h}_s - \mathbf{h}_t \|_2^2 + \lambda_2 \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{W}^T \mathbf{x}_i - \mathbf{h}_l \|_2^2 \\
+\text{s.t.} \quad & \mathbf{S} \mathbf{1}_n = \mathbf{1}_n, \quad \mathbf{S} \ge \mathbf{0}, \\
+& \mathbf{W}^T \mathbf{W} = \mathbf{I}_k, \\
+& \mathbf{F}^T \mathbf{F} = \mathbf{I}_r, \quad \mathbf{F} \ge \mathbf{0}
+\end{aligned}
+\tag{15}
+$$
+
+
+**rely on the existence of the inter-class relationship matrix 𝐑**. However,  acquiring this matrix can still be **exceedingly expensive** in certain scenarios, despite domain experts’ being capable of constructing it through empirical methods.
+
+To address this issue, we propose a two-step solution called ITPPC-2.
+
+The first step involves obtaining pseudo-labels by solving problem (15) without the inter-class preserving item, which is achieved by **setting 𝜆1 = 0.**
+
+We then use these pseudo-labels to solve problem (7) and derive the inter-class relationship matrix.
+
+In the second step, we utilize the learned inter-class relationship matrix **as input for  Algorithm 2 to generate the low-dimensional embedding representation**.
+
+This two-step approach enables us to effectively overcome the challenge of accessing the inter-class topology in a **more cost-efficient** manner. Here, we give a detailed description of ITPPC-2.
+
+- In the **R-stage**, we use **intra-class compactness learning** to make  classes more separable in low-dimensional embeddings and mine  better graph structure representation 𝐒. Specifically, we learn cluster results via solving the problem (15) with **𝜆1 = 0**, denoted  as **ITPPC-R**. Then, we calculate the category anchors with the  learned **cluster structure information**. We get an approximate  **inter-class relationship matrix($R$)** by solving the problem (7). To  approximate the real class topology as closely as possible, each  class has relationships with other 𝑟 − 2 classes (i.e., **except itself  and the least relevant class**).  
+- In the S-stage, we solve the problem (15) using the inter-class  topology obtained from the **R-step calculation**. Through Algorithm 2, we obtain the final graph structure and low-dimensional embedding representation.
+
+**Kernelization Analysis**: The proposed ITPPC can be extended to a  **kernel graph embedding version**, enabling **the handling of non-linear  data distributions**. Specifically, we can substitute the data matrix 𝐗  with the gram matrix 𝐊, where feature space mapping  maps data points to the reproducing kernel Hilbert space. We formulate the Kernel ITPPC as
+
+$$
+\begin{aligned}
+\min_{\mathbf{S},\mathbf{F},\mathbf{H},\mathbf{W}} \quad & 2 \mathrm{Tr}(\mathbf{W}^T \mathbf{K} \mathbf{L}_{\mathbf{S}} \mathbf{K}^T \mathbf{W}) + \alpha \| \mathbf{S} \|_F^2 + 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) \\
+& + \lambda_1 \sum_{st=1}^{r} R_{st} \| \mathbf{h}_s - \mathbf{h}_t \|_2^2 + \lambda_2 \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{W}^T \mathbf{K}_i - \mathbf{h}_l \|_2^2 \\
+\text{s.t.} \quad & \mathbf{S} \mathbf{1}_n = \mathbf{1}_n, \quad \mathbf{S} \ge \mathbf{0}, \\
+& \mathbf{W}^T \mathbf{W} = \mathbf{I}_k, \\
+& \mathbf{F}^T \mathbf{F} = \mathbf{I}_r, \quad \mathbf{F} \ge \mathbf{0}
+\end{aligned}
+\tag {16}
+$$
+
+
+
