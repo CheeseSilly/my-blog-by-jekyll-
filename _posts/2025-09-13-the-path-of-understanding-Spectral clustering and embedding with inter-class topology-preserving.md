@@ -324,3 +324,116 @@ $$
 
 
 
+## Optimization algorithm
+
+### Optimize 𝐒 with fixed 𝐅, 𝐖, 𝐇
+
+
+When 𝐅, 𝐖, 𝐇 are fixed, the problem (15) becomes
+
+$$
+\begin{aligned}
+\min_{\mathbf{S}} \quad & \sum_{ij=1}^{n} S_{ij} \| \mathbf{z}_i - \mathbf{z}_j \|_2^2 + \alpha \| \mathbf{S} \|_F^2 + 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) \\
+\text{s.t.} \quad & \mathbf{S} \mathbf{1}_n = \mathbf{1}_n, \quad \mathbf{S} \ge \mathbf{0}.
+\end{aligned}
+\tag{17}
+$$
+
+We split the problem (17) into the following independent subproblems:
+
+$$
+\begin{aligned}
+\min_{\mathbf{s}_i} \quad & \sum_{j=1}^{n} s_{ij} \| \mathbf{z}_i - \mathbf{z}_j \|_2^2 + \alpha \| \mathbf{s}_i \|_2^2 + \beta \sum_{j=1}^{n} s_{ij} \| \mathbf{F}_i - \mathbf{F}_j \|_2^2 \\
+\text{s.t.} \quad & \mathbf{s}_i^T \mathbf{1}_n = 1, \quad \mathbf{s}_i \ge \mathbf{0}.
+\end{aligned}
+\tag{18}
+$$
+
+Let 𝑑𝑖𝑗 = $‖𝐳𝑖 − 𝐳𝑗‖^2_2 + 𝛽‖𝐅𝑖 − 𝐅𝑗 ‖^2_2$, then problem (18) can be transformed into the following form:
+
+$$
+\begin{aligned}
+\min_{\mathbf{s}_i} \quad & \| \mathbf{s}_i + \frac{1}{2\alpha} \mathbf{d}_i \|_2^2 \\
+\text{s.t.} \quad & \mathbf{s}_i^T \mathbf{1}_n = 1, \quad \mathbf{s}_i \ge \mathbf{0}.
+\end{aligned}
+\tag {19}
+$$
+
+We set 𝛼 = 𝛽 and adaptively update them according to the connectivity of the learned graph structure.
+
+Specifically, if the learned connected subgraphs are less than the number of  real categories, we will strengthen the constraint of 𝑟𝑎𝑛𝑘(𝐿𝑆) = 𝑛 − 𝑟 by **increasing the value of 𝛽 as 𝛽 = 2𝛽**.
+
+$$
+\frac{d_{ij}}{2\beta} = \frac{\| \mathbf{z}_i - \mathbf{z}_j \|_2^2 + \beta \| \mathbf{F}_i - \mathbf{F}_j \|_2^2}{2\beta} \tag{20}
+$$
+
+why it works?
+
+𝑑𝑖𝑗 = $‖𝐳𝑖 − 𝐳𝑗‖^2_2 + 𝛽‖𝐅𝑖 − 𝐅𝑗 ‖^2_2$  ,then we increase $\beta$ , which strengthens weight of $‖𝐅𝑖 − 𝐅𝑗 ‖^2_2$
+focusing the similarity of two samples.
+
+Conversely, if the number of learned subgraphs exceeds the number  of categories, we will lower the connectivity constraint by decreasing  𝛽 as 𝛽 = 𝛽∕2. This parameter setting helps our method achieve better performance.
+
+### Optimize 𝐅 with fixed 𝐒, 𝐖, 𝐇
+
+When 𝐒, 𝐖, 𝐇 are fixed, the problem (15) becomes
+
+$$
+\begin{aligned}
+\min_{\mathbf{F}} \quad & 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) + \lambda_2 \sum_{i=1}^{n} \sum_{l=1}^{r} F_{il} \| \mathbf{z}_i - \mathbf{h}_l \|_2^2 \\
+\text{s.t.} \quad & \mathbf{F}^T \mathbf{F} = \mathbf{I}_r, \quad \mathbf{F} \ge \mathbf{0}.
+\end{aligned}
+\tag {21}
+$$
+
+
+Let $𝛷𝑖𝑙 = ‖𝐳𝑖 − 𝐡𝑙 ‖^2_2$, then we have
+
+$$
+\begin{aligned}
+\min_{\mathbf{F}} \quad & 2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) + \lambda_2 \mathrm{Tr}(\mathbf{F}\mathbf{\Phi}^T) \\
+\text{s.t.} \quad & \mathbf{F}^T \mathbf{F} = \mathbf{I}_r, \quad \mathbf{F} \ge \mathbf{0}.
+\end{aligned}
+\tag {22}
+$$
+
+we give the Lagrangian function as follows:
+$$
+2\beta \mathrm{Tr}(\mathbf{F}^T \mathbf{L}_{\mathbf{S}} \mathbf{F}) + \lambda_2 \mathrm{Tr}(\mathbf{F}\mathbf{\Phi}^T) + \frac{\eta}{2} \| \mathbf{F}^T \mathbf{F} - \mathbf{I} \|_F^2 + \mathrm{Tr}(\mathbf{F}\mathbf{\Psi}^T) \tag {23}
+$$
+
+
+where 𝜂 and Ψ are the Lagrange multipliers. Using Karush–Kuhn–Tuckre condition with Ψ ⊙ 𝐅 = 0 and setting its derivative with respect to 𝐇 to 0, we have
+
+$$
+F_{ij} \leftarrow F_{ij} \frac{[2\eta \mathbf{F}]_{ij}}{[4\beta (\mathbf{L}_{\mathbf{S}} \mathbf{F}) + \lambda_2 \mathbf{\Phi} + 2\eta (\mathbf{F} \mathbf{F}^T \mathbf{F})]_{ij}} \tag {24}
+$$
+
+H?
+
+ **知识角：如何推导 $\frac{\partial}{\partial \mathbf{F}} Tr(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F}) = 4\mathbf{F}\mathbf{F}^T\mathbf{F}$？**
+
+这个推导需要使用微分法，这是矩阵微积分中最基本的方法。
+
+1. 令 $g(\mathbf{F}) = Tr(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F})$。
+    
+2. 我们计算它的微分 $dg$： $dg = d(Tr(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F})) = Tr(d(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F}))$
+    
+3. 利用微分的乘法法则 $d(\mathbf{ABCD}) = (d\mathbf{A})\mathbf{BCD} + \mathbf{A}(d\mathbf{B})\mathbf{CD} + ...$： $d(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F}) = (d\mathbf{F}^T)\mathbf{F}\mathbf{F}^T\mathbf{F} + \mathbf{F}^T(d\mathbf{F})\mathbf{F}^T\mathbf{F} + \mathbf{F}^T\mathbf{F}(d\mathbf{F}^T)\mathbf{F} + \mathbf{F}^T\mathbf{F}\mathbf{F}^T(d\mathbf{F})$
+    
+4. 代入迹中，并利用迹的循环性质 $Tr(\mathbf{ABCD})=Tr(\mathbf{DABC})$ 和 $Tr(\mathbf{A}^T)=Tr(\mathbf{A})$，将所有包含 $d\mathbf{F}$的项都整理成 $Tr(...\cdot d\mathbf{F})$ 的形式：
+    
+    - $Tr((d\mathbf{F}^T)\mathbf{F}\mathbf{F}^T\mathbf{F}) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
+        
+    - $Tr(\mathbf{F}^T(d\mathbf{F})\mathbf{F}^T\mathbf{F}) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
+        
+    - $Tr(\mathbf{F}^T\mathbf{F}(d\mathbf{F}^T)\mathbf{F}) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
+        
+    - $Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T(d\mathbf{F})) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
+        
+5. 把这四项加起来，我们得到： $dg = 4 \cdot Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
+    
+6. 根据微分与导数的关系 $dg = Tr((\frac{\partial g}{\partial \mathbf{F}})^T d\mathbf{F})$，通过对比，我们得出： $(\frac{\partial g}{\partial \mathbf{F}})^T = 4\mathbf{F}^T\mathbf{F}\mathbf{F}^T$
+    
+7. 两边同时转置，就得到了最终的结果： $\frac{\partial g}{\partial \mathbf{F}} = 4(\mathbf{F}^T\mathbf{F}\mathbf{F}^T)^T = 4\mathbf{F}\mathbf{F}^T\mathbf{F}$
+
