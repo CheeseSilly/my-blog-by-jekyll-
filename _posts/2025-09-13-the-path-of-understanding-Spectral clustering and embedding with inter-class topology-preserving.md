@@ -409,31 +409,26 @@ $$
 F_{ij} \leftarrow F_{ij} \frac{[2\eta \mathbf{F}]_{ij}}{[4\beta (\mathbf{L}_{\mathbf{S}} \mathbf{F}) + \lambda_2 \mathbf{\Phi} + 2\eta (\mathbf{F} \mathbf{F}^T \mathbf{F})]_{ij}} \tag {24}
 $$
 
-H?
 
- **知识角：如何推导 $\frac{\partial}{\partial \mathbf{F}} Tr(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F}) = 4\mathbf{F}\mathbf{F}^T\mathbf{F}$？**
+## Optimization of mine
 
-这个推导需要使用微分法，这是矩阵微积分中最基本的方法。
+$$
+\begin{aligned}
+\min_{\mathbf{W,H,R}} \|\mathbf{XW} - \mathbf{Y}\|_F^2 + \alpha\|\mathbf{W}\|_{2,1} + \beta \sum_{i,\ell} Y_{il}\|\mathbf{x}_i\mathbf{W} - \mathbf{h}^{T}_\ell\|_2^2 +  \gamma\sum_{s,t} R_{st}\|\mathbf{h}_s - \mathbf{h}_t\|_2^2 \\
+\text{s.t.} \quad & \mathbf{W}^T \mathbf{W} = \mathbf{I}_r
+\end{aligned}
+$$
+X : n d
+W: d r
+Y: n  r
+H: r r
+### Optimize W
 
-1. 令 $g(\mathbf{F}) = Tr(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F})$。
-    
-2. 我们计算它的微分 $dg$： $dg = d(Tr(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F})) = Tr(d(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F}))$
-    
-3. 利用微分的乘法法则 $d(\mathbf{ABCD}) = (d\mathbf{A})\mathbf{BCD} + \mathbf{A}(d\mathbf{B})\mathbf{CD} + ...$： $d(\mathbf{F}^T \mathbf{F} \mathbf{F}^T \mathbf{F}) = (d\mathbf{F}^T)\mathbf{F}\mathbf{F}^T\mathbf{F} + \mathbf{F}^T(d\mathbf{F})\mathbf{F}^T\mathbf{F} + \mathbf{F}^T\mathbf{F}(d\mathbf{F}^T)\mathbf{F} + \mathbf{F}^T\mathbf{F}\mathbf{F}^T(d\mathbf{F})$
-    
-4. 代入迹中，并利用迹的循环性质 $Tr(\mathbf{ABCD})=Tr(\mathbf{DABC})$ 和 $Tr(\mathbf{A}^T)=Tr(\mathbf{A})$，将所有包含 $d\mathbf{F}$的项都整理成 $Tr(...\cdot d\mathbf{F})$ 的形式：
-    
-    - $Tr((d\mathbf{F}^T)\mathbf{F}\mathbf{F}^T\mathbf{F}) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
-        
-    - $Tr(\mathbf{F}^T(d\mathbf{F})\mathbf{F}^T\mathbf{F}) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
-        
-    - $Tr(\mathbf{F}^T\mathbf{F}(d\mathbf{F}^T)\mathbf{F}) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
-        
-    - $Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T(d\mathbf{F})) = Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
-        
-5. 把这四项加起来，我们得到： $dg = 4 \cdot Tr(\mathbf{F}^T\mathbf{F}\mathbf{F}^T d\mathbf{F})$
-    
-6. 根据微分与导数的关系 $dg = Tr((\frac{\partial g}{\partial \mathbf{F}})^T d\mathbf{F})$，通过对比，我们得出： $(\frac{\partial g}{\partial \mathbf{F}})^T = 4\mathbf{F}^T\mathbf{F}\mathbf{F}^T$
-    
-7. 两边同时转置，就得到了最终的结果： $\frac{\partial g}{\partial \mathbf{F}} = 4(\mathbf{F}^T\mathbf{F}\mathbf{F}^T)^T = 4\mathbf{F}\mathbf{F}^T\mathbf{F}$
+$$Tr(\mathbf{W}^T \mathbf{\Delta_1} \mathbf{W}) - 2Tr(\mathbf{W}^T \mathbf{\Delta_2})$$
 
+- $$\mathbf{\Delta_1} = \mathbf{X}^T\mathbf{X} + \alpha\mathbf{D} + \beta\mathbf{X}^T Diag(\mathbf{Y1}_r) \mathbf{X}$$
+    
+- $$\mathbf{\Delta_2} = \mathbf{X}^T\mathbf{Y} + \beta\mathbf{X}^T\mathbf{Y}\mathbf{H}$$
+### Optimize H
+
+$$\mathbf{H} = \beta (2\gamma \mathbf{L_R} + \beta \mathbf{\Lambda_F})^{-1} \mathbf{Y}^T \mathbf{Z}$$
