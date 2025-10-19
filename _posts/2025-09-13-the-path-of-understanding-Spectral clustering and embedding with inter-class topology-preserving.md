@@ -414,8 +414,7 @@ $$
 
 $$
 \begin{aligned}
-\min_{\mathbf{W,H,R}} \|\mathbf{XW} - \mathbf{Y}\|_F^2 + \alpha\|\mathbf{W}\|_{2,1} + \beta \sum_{i,\ell} Y_{il}\|\mathbf{x}_i\mathbf{W} - \mathbf{h}^{T}_\ell\|_2^2 +  \gamma\sum_{s,t} R_{st}\|\mathbf{h}_s - \mathbf{h}_t\|_2^2 \\
-\text{s.t.} \quad & \mathbf{W}^T \mathbf{W} = \mathbf{I}_r
+\min_{\mathbf{W,H}} \|\mathbf{XW} - \mathbf{Y}\|_F^2 + \alpha\|\mathbf{W}\|_{2,1} + \beta \sum_{i,\ell} Y_{il}\|\mathbf{x}_i\mathbf{W} - \mathbf{h}^{T}_\ell\|_2^2 +  \gamma\sum_{s,t} R_{st}\|\mathbf{h}_s - \mathbf{h}_t\|_2^2 \\
 \end{aligned}
 $$
 X : n d
@@ -424,11 +423,23 @@ Y: n  r
 H: r r
 ### Optimize W
 
+
+$$\begin{aligned}
+\min_{\mathbf{W}} \|\mathbf{XW} - \mathbf{Y}\|_F^2 + \alpha\|\mathbf{W}\|_{2,1} + \beta \sum_{i,\ell} Y_{il}\|\mathbf{x}_i\mathbf{W} - \mathbf{h}^{T}_\ell\|_2^2
+\end{aligned}$$
+
+$$\min_{\mathbf{W}} Tr(W^T(X^TX+\alpha D+\beta X^T\Lambda_2X)W)-2Tr(W^TX^T(Y+\beta YH))$$
+
 $$Tr(\mathbf{W}^T \mathbf{\Delta_1} \mathbf{W}) - 2Tr(\mathbf{W}^T \mathbf{\Delta_2})$$
 
-- $$\mathbf{\Delta_1} = \mathbf{X}^T\mathbf{X} + \alpha\mathbf{D} + \beta\mathbf{X}^T Diag(\mathbf{Y1}_r) \mathbf{X}$$
-    
+- $$\mathbf{\Delta_1} = \mathbf{X}^T\mathbf{X} + \alpha\mathbf{D} + \beta\mathbf{X}^T \Lambda_2 \mathbf{X}$$
 - $$\mathbf{\Delta_2} = \mathbf{X}^T\mathbf{Y} + \beta\mathbf{X}^T\mathbf{Y}\mathbf{H}$$
+- $$\frac{\partial}{\partial W} = \Delta_1W-2\beta\Delta_2 = 0$$
+
+- $$W=\Delta_1^{-1}(2\beta\Delta_2)$$
 ### Optimize H
 
-$$\mathbf{H} = \beta (2\gamma \mathbf{L_R} + \beta \mathbf{\Lambda_F})^{-1} \mathbf{Y}^T \mathbf{Z}$$
+$$Tr(H(2\gamma L_R+\beta \Lambda_1)H^T)-2\beta Tr(Y^TZH^T)$$
+
+
+$$\mathbf{H} = \beta (2\gamma \mathbf{L_R} + \beta \mathbf{\Lambda_1})^{-1} \mathbf{Y}^T \mathbf{Z}$$

@@ -20,6 +20,18 @@
               "icon": "lucide-file",
               "title": "2025-09-13-the-path-of-understanding-Spectral clustering and embedding with inter-class topology-preserving"
             }
+          },
+          {
+            "id": "ed741a554a764bb2",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.9.14"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.9.14"
+            }
           }
         ]
       }
@@ -190,10 +202,11 @@
       "bases:Create new base": false
     }
   },
-  "active": "6ce9cdff026e8993",
+  "active": "211e8c5c15b4f056",
   "lastOpenFiles": [
-    "2025-09-20.md",
+    "2023-10-22-Huffman-Tree.md",
     "2025-09-13-the-path-of-understanding-Spectral clustering and embedding with inter-class topology-preserving.md",
+    "2025-09-20.md",
     "2025-09-17-Daily.md",
     "2025-08-15-二重积分.md",
     "2025-08-13-栈&队列&数组.md",
@@ -217,7 +230,6 @@
     "2025-03-23-今日总结.md",
     "2025-03-21-今日总结.md",
     "2025-03-20-今日总结.md",
-    "2025-03-19-今日总结.md",
     "template/新建 Microsoft Word 文档.docx",
     "template",
     "新建文件夹",
